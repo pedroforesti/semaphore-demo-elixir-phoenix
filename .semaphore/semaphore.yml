@@ -21,6 +21,7 @@ blocks:
             - mix do compile
             - MIX_ENV=test mix compile
             - cache store
+            - echo "test"
   - name: Analyze code
     task:
       prologue:
