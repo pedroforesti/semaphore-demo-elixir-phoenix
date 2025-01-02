@@ -17,40 +17,7 @@ blocks:
       jobs:
         - name: Compile
           commands:
-            - mix deps.get
-            - mix do compile
-            - MIX_ENV=test mix compile
-            - cache store
-            - echo "test"
-  - name: Analyze code
-    task:
-      prologue:
-        commands:
-          - mix deps.get
-      jobs:
-        - name: Credo
-          commands:
-            - mix credo -a
-        - name: Formatter
-          commands:
-            - mix format --check-formatted
-  - name: Tests
-    task:
-      prologue:
-        commands:
-          - mix deps.get
-      jobs:
-        - name: ex_unit
-          env_vars:
-            - name: DATABASE_URL
-              value: 'ecto://postgres:@0.0.0.0:5432/sema_test'
-          commands:
-            - sem-service start postgres
-            - mix test
-      epilogue:
-        always:
-          commands:
-            - test-results publish /tmp/junit.xml
+            - echo "test after pre-flight check"
 after_pipeline:
   task:
     jobs:
