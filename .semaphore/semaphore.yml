@@ -22,6 +22,7 @@ blocks:
             - 'mix do compile, dialyzer --plt'
             - MIX_ENV=test mix compile
             - cache store
+            - echo "eeee"
             - cache store dialyzer-plt priv/plts/
   - name: Analyze code
     task:
