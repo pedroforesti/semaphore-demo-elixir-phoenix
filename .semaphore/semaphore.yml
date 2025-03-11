@@ -17,13 +17,8 @@ blocks:
       jobs:
         - name: compile and build plts
           commands:
-            - cache restore dialyzer-plt
-            - mix deps.get
-            - 'mix do compile, dialyzer --plt'
-            - MIX_ENV=test mix compile
-            - cache store
-            - echo "eeee"
-            - cache store dialyzer-plt priv/plts/
+            - sleep 10
+            - echo "aaaaaa"
   - name: Analyze code
     task:
       prologue:
