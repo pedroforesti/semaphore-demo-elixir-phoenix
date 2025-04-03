@@ -4,9 +4,14 @@ agent:
   machine:
     type: e1-standard-2
     os_image: ubuntu2004
+auto_cancel:
+  running:
+    when: 'true'
 fail_fast:
   stop:
     when: 'true'
+queue:
+  processing: parallel
 global_job_config:
   prologue:
     commands:
