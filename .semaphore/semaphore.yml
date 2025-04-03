@@ -33,7 +33,7 @@ blocks:
       jobs:
         - name: unit tests
           commands:
-            - sleep 6
+            - sleep 50
   - name: system tests
     dependencies:
       - smoke tests
@@ -46,7 +46,7 @@ blocks:
       jobs:
         - name: system tests
           commands:
-            - sleep 20
+            - sleep 10
             - exit(1)
 after_pipeline:
   task:
