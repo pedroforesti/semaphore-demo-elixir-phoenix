@@ -33,7 +33,7 @@ blocks:
       jobs:
         - name: unit tests
           commands:
-            - sleep 5
+            - sleep 6
   - name: system tests
     dependencies:
       - smoke tests
