@@ -4,6 +4,9 @@ agent:
   machine:
     type: e1-standard-2
     os_image: ubuntu2004
+fail_fast:
+  stop:
+    when: 'true'
 global_job_config:
   prologue:
     commands:
@@ -12,42 +15,39 @@ global_job_config:
       - bin/setup_ci_elixir
       - cache restore
 blocks:
-  - name: Set up
+  - name: smoke tests
+    dependencies: []
+    execution_time_limit:
+      minutes: 2
     task:
       jobs:
-        - name: compile and build plts
+        - name: smoke tests
           commands:
-            - sleep 10
-            - echo "aaaaaa"
-  - name: Analyze code
-    task:
-      prologue:
-        commands:
-          - cache restore dialyzer-plt
-      jobs:
-        - name: credo
-          commands:
-            - mix credo -a
-        - name: dialyzer
-          commands:
-            - mix dialyzer --no-compile
-        - name: formatter
-          commands:
-            - mix format --check-formatted
-  - name: Run tests
+            - sleep 3
+  - name: unit tests
+    dependencies:
+      - smoke tests
+    execution_time_limit:
+      minutes: 5
     task:
       jobs:
-        - name: ex_unit
-          env_vars:
-            - name: DATABASE_URL
-              value: 'ecto://postgres:@0.0.0.0:5432/sema_test'
+        - name: unit tests
           commands:
-            - sem-service start postgres
-            - mix test
-      epilogue:
-        always:
+            - sleep 5
+  - name: system tests
+    dependencies:
+      - smoke tests
+    execution_time_limit:
+      minutes: 5
+    task:
+      env_vars:
+        - name: PARALLEL_WORKERS
+          value: '2'
+      jobs:
+        - name: system tests
           commands:
-            - test-results publish /tmp/junit.xml
+            - sleep 20
+            - exit(1)
 after_pipeline:
   task:
     jobs:
